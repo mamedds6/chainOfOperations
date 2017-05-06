@@ -33,7 +33,7 @@ public class Operation {
         AbstractOperation chainOfOperations = getChainOfOperation();
         Operation op1 = new Operation();
         //String input = System.console().readLine();
-        op1.input = "4*6";
+        op1.input = "4-6";
         op1.parse();
         System.out.println(op1.operand1);
         System.out.println(op1.operator);
