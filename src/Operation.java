@@ -11,34 +11,47 @@ public class Operation {
     public Operation() {}
 
     public void parse() {
-        //
-        operand1 = input.charAt(0)-48;
-        operand2 = input.charAt(2)-48;
-        operator = input.charAt(1);
+        String [] temp = input.split("[^0-9|.]");
+        if(input.charAt(0)=='-') {
+            operand1 = -Float.parseFloat(temp[1]);
+            operator = input.charAt(temp[1].length()+1);
+        }
+        else {
+            operand1 = Float.parseFloat(temp[0]);
+            operator = input.charAt(temp[0].length());
+        }
+        operand2 = Float.parseFloat(temp[temp.length-1]);
     }
 
-    public static AbstractOperation getChainOfOperation() {
+    public static AbstractOperation getChainOfOperations() {
+        AbstractOperation zzz = new opsCustomZ();
         AbstractOperation mul = new opsMultiplication();
+        AbstractOperation div = new opsDivision();
         AbstractOperation add = new opsAddition();
         AbstractOperation sub = new opsSubtraction();
         AbstractOperation res = new opsResult();
-        mul.setNextOperation(add);
+        zzz.setNextOperation(mul);
+        mul.setNextOperation(div);
+        div.setNextOperation(add);
         add.setNextOperation(sub);
         sub.setNextOperation(res);
-        return mul;
+        return zzz;
     }
 
     public static void main(String[] args) {
-
-        AbstractOperation chainOfOperations = getChainOfOperation();
+        AbstractOperation chainOfOperations = getChainOfOperations();
         Operation op1 = new Operation();
-        //String input = System.console().readLine();
-        op1.input = "4-6";
+
+        //input takes float, any single character operator and another float, with no spaces between.
+        //implemented operations: [*, /, +, -, z]
+        op1.input = "-0.12*9.87";
+
         op1.parse();
         System.out.println(op1.operand1);
         System.out.println(op1.operator);
         System.out.println(op1.operand2);
-        System.out.println("========");
+        System.out.println("=");
+
         chainOfOperations.makeOperation(op1);
         System.out.println(op1.result);
     }
